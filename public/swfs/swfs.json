@@ -1,0 +1,24 @@
+{
+  "swfs": [
+    {
+      "title": "Ruffle Logo",
+      "location": "swfs/logo-anim.swf",
+      "type": "Animation"
+    },
+    {
+      "title": "The Fight For Glorton",
+      "location": "swfs/The Fight For Glorton.swf",
+      "type": "Game"
+    },
+    {
+      "title": "Battle Mechs",
+      "location": "swfs/Battle Mechs.swf",
+      "type": "Game"
+    },
+    {
+      "title": "Bionoids",
+      "location": "swfs/Bionoids.swf",
+      "type": "Game"
+    }
+  ]
+}

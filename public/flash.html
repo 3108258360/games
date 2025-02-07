@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Flash Player</title>
+    <style>
+      :root {
+        --ruffle-light-blue: #546da3;
+        --ruffle-blue: #37528c;
+        --ruffle-dark-blue: #184778;
+        --ruffle-orange: #ffad33;
+        --ruffle-dark-orange: #966214;
+      }
+      .notransition,
+      .notransition *,
+      .notransition:after,
+      .notransition:before {
+        transition: none !important;
+      }
+      body {
+        background: var(--ruffle-blue);
+        font: 14px Arial, sans-serif;
+        margin: auto;
+        color: #fff;
+      }
+      .header {
+        position: relative;
+        background: var(--ruffle-dark-blue);
+        text-align: center;
+        padding: 16px 16px 6px;
+        box-shadow: 0 0 12px #0008;
+      }
+      .header a {
+        display: inline-block;
+        line-height: 0;
+      }
+      #version-text {
+        text-align: center;
+        font-size: smaller;
+        opacity: 0.6;
+      }
+      .logo {
+        width: 100%;
+        transition: transform 0.2s;
+      }
+      .logo:hover {
+        transform: scale(104%);
+      }
+      input,
+      select {
+        background: var(--ruffle-dark-blue);
+        color: #fff;
+        padding: 6px;
+        border: none;
+        border-radius: 4px;
+      }
+      input::placeholder {
+        opacity: 0.5;
+        color: #fff;
+      }
+      button {
+        padding: 6px 8px;
+        border: 2px solid var(--ruffle-blue);
+        border-radius: 8px;
+        cursor: pointer;
+        text-align: center;
+        background: var(--ruffle-light-blue);
+        color: #fff;
+        text-shadow: 0 0 0.1px #fff;
+      }
+      .options {
+        display: flex;
+        flex-flow: column;
+        gap: 20px;
+      }
+      .option {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+      .option input,
+      .option select {
+        padding: 4px;
+        position: absolute;
+        right: 0;
+      }
+      .option label {
+        display: inline-block;
+        padding-right: 60px;
+      }
+      .option.checkbox input {
+        width: 40px;
+        height: 20px;
+        margin: auto;
+        cursor: pointer;
+        z-index: 1;
+        opacity: 0;
+      }
+      .option.checkbox label:after,
+      .option.checkbox label:before {
+        content: "";
+        position: absolute;
+        border-radius: 10px;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        transition: background 0.2s, right 0.2s;
+      }
+      .option.checkbox label:before {
+        height: 20px;
+        width: 40px;
+        right: 0;
+        background: gray;
+      }
+      .option.checkbox label:after {
+        height: 18px;
+        width: 18px;
+        right: 21px;
+        background: silver;
+      }
+      .option.checkbox input:checked + label:before {
+        background: var(--ruffle-dark-orange);
+      }
+      .option.checkbox input:checked + label:after {
+        background: var(--ruffle-orange);
+        right: 1px;
+      }
+      .option.number-input input {
+        width: 60px;
+        height: 20px;
+        margin: auto;
+      }
+      .hidden {
+        display: none !important;
+      }
+      #root {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        padding: 0;
+        margin: 0;
+        font-size: 100%;
+        display: flex;
+        flex-direction: column;
+        background: #000;
+      }
+      #nav {
+        width: 100%;
+        background: var(--ruffle-blue);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        color: #fff;
+        padding: 8px 16px;
+        box-sizing: border-box;
+      }
+      #nav > * {
+        display: flex;
+        gap: 20px;
+      }
+      #fullscreen {
+        position: fixed;
+        z-index: 999;
+        bottom: 20px;
+        right: 20px;
+      }
+      .logo {
+        height: 32px;
+        flex: 0 0 content;
+      }
+      .select-container > div {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        flex-wrap: wrap;
+      }
+      #web-url {
+        width: min(40vw, 500px);
+      }
+      #local-file {
+        display: none;
+      }
+      #local-file-name,
+      #local-file-static-label,
+      #sample-swfs-label {
+        font-size: smaller;
+      }
+      #local-file-static-label {
+        display: none;
+      }
+      #reload-swf,
+      #toggle-info {
+        cursor: pointer;
+      }
+      #author {
+        color: var(--ruffle-orange);
+      }
+      #main {
+        position: relative;
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+      }
+      #author-container {
+        font-size: smaller;
+      }
+      #player-container {
+        overflow-y: hidden;
+        flex-grow: 1;
+      }
+      #player-container > * {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+      #overlay {
+        pointer-events: none;
+        border: 8px dashed var(--ruffle-orange);
+        border-radius: 30px;
+        opacity: 0;
+        transition: opacity 0.3s ease-in;
+        box-sizing: border-box;
+        z-index: 1;
+      }
+      #overlay.drag {
+        opacity: 1;
+        transition-timing-function: ease-out;
+      }
+      .info-container-shown #player {
+        width: calc(100% - 300px);
+      }
+      #overlay:not([hidden]) ~ #player {
+        bottom: 100%;
+      }
+      #info-container {
+        display: flex;
+        position: absolute;
+        inset: 0 0 0 auto;
+        width: 300px;
+        background-color: var(--ruffle-blue);
+        padding: 4px 16px;
+        flex-direction: column;
+        gap: 8px;
+        box-sizing: border-box;
+      }
+      #info-container span:first-child {
+        text-shadow: 0 0 1px #fff;
+      }
+      #info-container span:first-child:after {
+        content: ":";
+      }
+      #info-container span:last-child {
+        float: right;
+      }
+      #backgroundColor {
+        width: 1em;
+        height: 1em;
+        border: 2px solid var(--ruffle-dark-blue);
+        background-color: #fff;
+      }
+      @media only screen and (max-width: 1120px) {
+        #local-file-static-label {
+          display: block;
+        }
+        .select-container {
+          flex-flow: column;
+        }
+      }
+      @media only screen and (max-width: 600px) {
+        #logo-container {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <button id="fullscreen">全屏</button>
+    <div id="root"></div>
+    <script type="module" crossorigin src="js/index.js"></script>
+    <script>
+      document.querySelector("#fullscreen").addEventListener("click", () => {
+        document.querySelector("#player-container").requestFullscreen();
+      });
+    </script>
+  </body>
+</html>
