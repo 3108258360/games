@@ -10,17 +10,30 @@
   </blockquote>
   <h1>添加游戏</h1>
   <blockquote>
+    <p>加入QQ群：578469285，获取编辑权限。</p>
     <p>打开在线模拟器，测试ROM能否正常运行。在游戏主界面左键截图。</p>
     <p>
-      上传ROM和截图到
-      <a href="https://github.com/3108258360/games/tree/main/public/roms">
+      压缩ROM文件，格式选7z，上传ROM和截图到
+      <a
+        href="https://github.com/3108258360/games/tree/main/public/roms"
+        target="_blank"
+      >
         仓库 </a
-      >。编辑仓库下的roms.json，仿照格式添加ROM全名。
+      >。
     </p>
+    <p>编辑仓库下的roms.json，填未压缩的ROM全名。</p>
   </blockquote>
 </template>
 <script lang="ts" setup></script>
 <style scoped>
+h1 {
+  line-height: 1.7;
+  text-indent: 20px;
+}
+blockquote {
+  color: var(--el-text-color-primary);
+  line-height: 1.7;
+}
 a:link,
 a:visited {
   color: var(--el-color-primary);
@@ -28,5 +41,13 @@ a:visited {
 a:hover,
 a:active {
   color: var(--el-color-danger);
+}
+@media screen and (max-width: 450px) {
+  h1 {
+    text-indent: 0;
+  }
+  blockquote {
+    margin: 16px;
+  }
 }
 </style>

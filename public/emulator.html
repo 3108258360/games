@@ -99,13 +99,13 @@
     <script>
       const params = new URLSearchParams(window.location.search);
       const urlParam = params.get("url");
-      console.log(urlParam);
-
+      const extParam = params.get("ext");
       const input = document.getElementById("input");
 
-      async function loadGame(url, file) {
+      async function loadGame(url, file, ext) {
         const parts = (file ? file.name : url).split(".");
-        const ext = parts.pop();
+        const extFromUrl = parts.pop();
+        const finalExt = ext || extFromUrl;
 
         const core = await (async (ext) => {
           if (["fds", "nes", "unif", "unf"].includes(ext)) return "nes";
@@ -179,7 +179,7 @@
             box.appendChild(select);
             box.appendChild(button);
           });
-        })(ext);
+        })(finalExt);
 
         const div = document.createElement("div");
         const sub = document.createElement("div");
@@ -205,7 +205,6 @@
         window.EJS_gameUrl = file ? URL.createObjectURL(file) : url;
         window.EJS_core = core;
         window.EJS_pathtodata = "data/";
-        // window.EJS_startOnLoaded = !!file;
         window.EJS_startOnLoaded = true;
         window.EJS_disableDatabases = true;
         window.EJS_DEBUG_XX = false;
@@ -217,7 +216,7 @@
       }
 
       if (urlParam != undefined) {
-        loadGame(urlParam);
+        loadGame(urlParam, null, extParam);
       } else {
         input.onchange = () => loadGame(null, input.files[0]);
       }

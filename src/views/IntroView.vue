@@ -112,6 +112,9 @@ figure {
 }
 
 @media screen and (max-width: 450px) {
+  h1 {
+    text-indent: 0;
+  }
   blockquote {
     margin: 16px;
   }

@@ -21,17 +21,9 @@
     :hasAroundGutter="false"
   >
     <template #default="{ item }">
-      <figure :id="getFileName(item.file)">
+      <figure :id="getFileName(item.file)" @click="startGame(item.file)">
         <LazyImg :url="'roms/' + getFileName(item.file) + '.png'" />
         <figcaption>{{ getFileName(item.file) }}</figcaption>
-        <div class="buttons">
-          <el-button type="primary" @click="downLoad(item.file)"
-            >下载</el-button
-          >
-          <el-button type="primary" @click="startGame(item.file)"
-            >开始</el-button
-          >
-        </div>
       </figure>
     </template>
   </Waterfall>
@@ -64,12 +56,11 @@ const getFileName = (file: string) => {
 const startGame = (file: string) => {
   router.push({
     path: "emulator",
-    query: { url: `/roms/${file}` },
+    query: {
+      url: `/roms/${getFileName(file)}.7z`,
+      ext: `${file.split(".").pop()}`,
+    },
   });
-};
-
-const downLoad = (file: string) => {
-  window.open(`/roms/${file}`);
 };
 
 const scrollToTop = () => {
@@ -99,11 +90,12 @@ const filteredList = computed(() => {
   margin-top: 20px;
 }
 figure {
+  cursor: pointer;
   margin: 0;
   text-align: center;
 }
 figcaption {
-  margin-top: 10px;
+  margin-top: 15px;
 }
 a:link,
 a:visited {
@@ -112,14 +104,5 @@ a:visited {
 a:hover,
 a:active {
   color: var(--el-color-danger);
-}
-.buttons {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  margin-top: -25px;
-}
-button {
-  cursor: pointer;
 }
 </style>

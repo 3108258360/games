@@ -30,4 +30,13 @@ strong {
   color: var(--el-color-primary);
   color: #409eff;
 }
+@media screen and (max-width: 450px) {
+  iframe {
+    flex: 1;
+    aspect-ratio: 3/2;
+  }
+  .el-main {
+    padding: 0;
+  }
+}
 </style>
