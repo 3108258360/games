@@ -1,6 +1,6 @@
 <template>
   <div class="iframe-container">
-    <iframe src="flash.html" frameborder="0"></iframe>
+    <iframe src="https://ruffle.rs/demo" frameborder="0"></iframe>
   </div>
 </template>
 <script setup lang="ts"></script>

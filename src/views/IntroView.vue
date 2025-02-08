@@ -73,6 +73,7 @@ const scrollToTop = () => {
     top: 0,
     behavior: "smooth",
   });
+  drawer.value = false;
 };
 </script>
 <style scoped>
