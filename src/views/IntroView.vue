@@ -95,11 +95,11 @@ h1 {
 }
 a:link,
 a:visited {
-  color: var(--el-text-color-regular);
+  color: var(--el-color-primary);
 }
 a:hover,
 a:active {
-  color: var(--el-text-color-primary);
+  color: var(--el-color-danger);
 }
 blockquote {
   color: var(--el-text-color-primary);

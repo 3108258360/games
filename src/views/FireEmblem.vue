@@ -2,7 +2,7 @@
   <el-button class="showDir" type="primary" @click="drawer = true"
     >目录</el-button
   >
-  <el-drawer v-model="drawer" :with-header="false">
+  <el-drawer v-model="drawer" :with-header="false" size="auto">
     <el-button type="primary" @click="drawer = false">关闭目录</el-button>
     <el-input v-model="searchQuery" placeholder="搜索..." />
     <template v-for="i in filteredList" :key="i.file">
@@ -107,11 +107,11 @@ figcaption {
 }
 a:link,
 a:visited {
-  color: var(--el-text-color-regular);
+  color: var(--el-color-primary);
 }
 a:hover,
 a:active {
-  color: var(--el-text-color-primary);
+  color: var(--el-color-danger);
 }
 .buttons {
   width: 100%;
